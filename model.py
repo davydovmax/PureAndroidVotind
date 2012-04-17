@@ -12,7 +12,7 @@ def now():
 class User(config.Base):
     __tablename__ = 'users'
     id = Column(Integer, Sequence('user_id_seq'), primary_key=True)
-    phone_id = Column(String(64), nullable=False, unique=True)
+    phone_id = Column(String(16), nullable=False, unique=True)
     fullname = Column(String(60), nullable=False)
     email = Column(String(42), nullable=False)
     date_registered = Column(DateTime(), default=now)
@@ -82,8 +82,8 @@ class Vote(config.Base):
 
 class VoteOption(config.Base):
     __tablename__ = 'options'
-    id = Column(Integer, Sequence('vote_option_id_seq'), primary_key=True)
-    text = Column(String(120), nullable=True)
+    id = Column(Integer, Sequence('vote_option_id_seq'), primary_key=True, nullable=False)
+    text = Column(String(120), nullable=False)
     vote_id = Column(Integer, ForeignKey('votes.id'))
 
     def __init__(self, vote_id, text):
