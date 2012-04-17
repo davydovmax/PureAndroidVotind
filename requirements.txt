@@ -2,3 +2,4 @@ SQLAlchemy==0.7.6
 bottle==0.10.9
 bottle-sqlalchemy==0.3
 psycopg2==2.4.4
+python-dateutil==1.4.1
