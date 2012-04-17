@@ -9,7 +9,7 @@ from sqlalchemy.orm import sessionmaker
 import config
 
 config.Base = declarative_base()
-config.engine = create_engine('sqlite:///votes.db', echo=True)
+config.engine = create_engine(config.db_url, echo=True)
 bottle.install(SQLAlchemyPlugin(config.engine, config.Base.metadata, create=True))
 config.create_session = sessionmaker(bind=config.engine)
 
@@ -17,5 +17,6 @@ config.create_session = sessionmaker(bind=config.engine)
 import view
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
+    #bottle.debug(not config.is_production)
     bottle.debug(True)
     bottle.run(host='0.0.0.0', port=port, reloader=True)
