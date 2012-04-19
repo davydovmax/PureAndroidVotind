@@ -23,4 +23,5 @@ def json_encode_query(query):
 
 
 def json_encode(obj):
+    """TODO:"""
     return json.dumps(obj, default=json_handler)

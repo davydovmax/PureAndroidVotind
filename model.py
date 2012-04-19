@@ -1,3 +1,4 @@
+import logging
 import datetime
 from sqlalchemy import Column, Integer, Sequence, Boolean, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship, backref
@@ -5,11 +6,14 @@ from sqlalchemy.orm import relationship, backref
 import config
 
 
+logger = logging.getLogger('srv.'+__name__)
+
+
 def now():
     return datetime.datetime.now()
 
 
-class User(config.Base):
+class User(config.env.Base):
     __tablename__ = 'users'
     id = Column(Integer, Sequence('user_id_seq'), primary_key=True)
     phone_id = Column(String(16), nullable=False, unique=True)
@@ -35,7 +39,7 @@ class User(config.Base):
                 'date_registered': self.date_registered}
 
 
-class Vote(config.Base):
+class Vote(config.env.Base):
     __tablename__ = 'votes'
     id = Column(Integer, Sequence('vote_id_seq'), primary_key=True)
     author_id = Column(Integer, ForeignKey('users.id'))
@@ -80,7 +84,7 @@ class Vote(config.Base):
                 'is_multiple_choice': self.is_multiple_choice}
 
 
-class VoteOption(config.Base):
+class VoteOption(config.env.Base):
     __tablename__ = 'options'
     id = Column(Integer, Sequence('vote_option_id_seq'), primary_key=True, nullable=False)
     text = Column(String(120), nullable=False)
@@ -99,7 +103,7 @@ class VoteOption(config.Base):
                 'text': self.text}
 
 
-class VoteInvitation(config.Base):
+class VoteInvitation(config.env.Base):
     __tablename__ = 'invitations'
     id = Column(Integer, Sequence('vote_guest_id_seq'), primary_key=True)
     vote_id = Column(Integer, ForeignKey('votes.id'))
@@ -125,7 +129,7 @@ class VoteInvitation(config.Base):
                 'is_accepted': self.is_accepted}
 
 
-class VoteChoice(config.Base):
+class VoteChoice(config.env.Base):
     __tablename__ = 'choices'
     id = Column(Integer, Sequence('vote_choice_id_seq'), primary_key=True)
     vote_id = Column(Integer, ForeignKey('votes.id'))

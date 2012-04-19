@@ -1,4 +1,9 @@
+import logging
+
 from model import *
+
+
+logger = logging.getLogger('srv.'+__name__)
 
 
 def get_user(db, phone_id):
