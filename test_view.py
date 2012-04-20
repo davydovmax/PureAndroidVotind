@@ -31,6 +31,7 @@ def logs(db):
 def fill_test_data(db, current_user=None):
     logger.info('Creating test data')
     # TODO: delete test data
+    logger.debug('Cleaning db')
     if current_user:
         db.query(User).filter(id != current_user.id).delete()
     else:
@@ -39,12 +40,14 @@ def fill_test_data(db, current_user=None):
     db.query(VoteOption).delete()
 
     # create users
+    logger.debug('Creating users')
     user1 = controller.create_user(db, 'test_id_1', 'Barak Obama', 'obama@google.com')
     controller.create_user(db, 'test_id_2', 'John Smith', 'smith@google.com')
     controller.create_user(db, 'test_id_3', 'Ivan Petrov', 'petrov@google.com')
     db.commit()
 
-    # create vote
+    # create vote and options
+    logger.debug('Creating vote and options')
     vote1 = controller.create_vote(db=db,
         author=user1,
         title='USA President Election',
@@ -57,7 +60,6 @@ def fill_test_data(db, current_user=None):
         results_date=datetime.now())
     db.commit()
 
-    # create vote options
     controller.create_vote_options(db=db,
         vote=vote1,
         options=['Theodore Roosevelt',
@@ -81,6 +83,7 @@ def fill_test_data(db, current_user=None):
 
     if current_user:
         # create vote for a user
+        logger.debug('Creating user vote')
         vote_2 = controller.create_vote(db=db,
             author=current_user.id,
             title='Color You Like',
@@ -114,6 +117,8 @@ def fill_test_data(db, current_user=None):
 def fill_test_data_user(db, phone_id):
     logger.info('Serving fill_test_data_user()')
     user = controller.get_user(db, phone_id)
+    if not user:
+        abort(400, 'Invalid or unregistered phone id')
     fill_test_data(db, user)
 
 
