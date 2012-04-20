@@ -22,7 +22,8 @@ def user_listing(db):
 @get('/logs')
 def logs(db):
     logger.info('Serving logs()')
-    logs = [str(record) for record in config.env.history.records]
+    formatter = logging.Formatter(fmt='%(asctime)s %(levelname)s %(name)s %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+    logs = [formatter.format(record) for record in config.env.history.records]
     response.content_type = 'application/json'
     return json_encode_query(logs)
 
