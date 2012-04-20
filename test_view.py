@@ -79,6 +79,36 @@ def fill_test_data(db, current_user=None):
                  'Dwight D. Eisenhower'])
     db.commit()
 
+    if current_user:
+        # create vote for a user
+        vote_2 = controller.create_vote(db=db,
+            author=current_user.id,
+            title='Color You Like',
+            text='Choose any color that suits you best at the moment. FYI, my favorite color is red.',
+            is_private=False,
+            is_multiple_choice=False,
+            publication_date=datetime.now(),
+            start_date=datetime.now(),
+            end_date=datetime.now(),
+            results_date=datetime.now())
+        db.commit()
+
+        # create vote options
+        controller.create_vote_options(db=db,
+            vote=vote_2,
+            options=['White',
+                     'Pink',
+                     'Red',
+                     'Orange',
+                     'Brown',
+                     'Yellow',
+                     'Gray',
+                     'Green',
+                     'Cyan',
+                     'Blue',
+                     'Violet'])
+        db.commit()
+
 
 @put('/<phone_id>/fill_test_data')
 def fill_test_data_user(db, phone_id):
