@@ -20,8 +20,9 @@ class User(config.env.Base):
     fullname = Column(String(60), nullable=False)
     email = Column(String(42), nullable=False)
     date_registered = Column(DateTime(), default=now)
-    votes = relationship("Vote", backref=backref('author', order_by=id))
-    invitations = relationship("VoteInvitation", backref=backref('user', order_by=id))
+    votes = relationship('Vote', cascade='all,delete', backref=backref('author', order_by=id))
+    invitations = relationship('VoteInvitation', backref=backref('user', order_by=id))
+    choices = relationship('VoteChoice', cascade='all,delete', backref=backref('user', order_by=id))
 
     def __init__(self, phone_id, fullname, email):
         self.phone_id = phone_id
@@ -52,8 +53,9 @@ class Vote(config.env.Base):
     start_date = Column(DateTime(), nullable=False)
     end_date = Column(DateTime(), nullable=False)
     results_date = Column(DateTime(), nullable=False)
-    options = relationship("VoteOption", backref=backref('vote', order_by=id))
-    invitations = relationship("VoteInvitation", backref=backref('vote', order_by=id))
+    options = relationship('VoteOption', cascade='all,delete', backref=backref('vote', order_by=id))
+    invitations = relationship('VoteInvitation', cascade='all,delete', backref=backref('vote', order_by=id))
+    choices = relationship('VoteChoice', cascade='all,delete', backref=backref('vote', order_by=id))
 
     def __init__(self, author_id, title, text, is_private, is_multiple_choice,
                  publication_date, start_date, end_date, results_date):
@@ -144,8 +146,8 @@ class VoteChoice(config.env.Base):
         self.date_submitted = date_submitted
 
     def __repr__(self):
-        return "<VoteInvitation('%s','%s','%s','%s')>" % (self.vote_id, self.user_id,
-                                                          self.option_id, self.date_submitted)
+        return "<VoteInvitation('{0:>s}','{1:>s}','{2:>s}','{3:>s}')>".\
+            format(self.vote_id, self.user_id, self.option_id, self.date_submitted)
 
     def json_dict(self):
         return {'id': self.id,
