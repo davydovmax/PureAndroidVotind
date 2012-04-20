@@ -11,9 +11,10 @@ from json_helper import json_encode_query, json_encode, get_date
 logger = logging.getLogger('srv.'+__name__)
 
 
-@put('/register/<phone_id>')
+@put('/<phone_id>/register')
 def register_user(phone_id, db):
     """Registers user. If user already created, request will be ignored"""
+    logging.info('Serving register_user()')
     if controller.get_user(db, phone_id):
         return
 
@@ -24,6 +25,7 @@ def register_user(phone_id, db):
 
     #TODO: check email
     #TODO: check phone_id
+    logging.info('Creating new user {0:>s}, {1:>s}, {2:>s}'.format(phone_id, fullname, email))
     controller.create_user(db, phone_id, fullname, email)
 
 

@@ -36,6 +36,7 @@ class HistoryHandler(logging.Handler):
 
 class Environment(object):
     is_debug_mode = True
+    is_db_echo = False
     is_production = False
     port = 5000
     db_url = 'sqlite:///votes.db'
@@ -76,6 +77,7 @@ class Environment(object):
     def _log_configuration(self):
         """Log some config data."""
         logger.info('Debug mode: %s' % self.is_debug_mode)
+        logger.info('DB echo: %s' % self.is_db_echo)
         logger.info('Production environment: %s' % self.is_production)
         logger.info('Port: %s' % self.port)
         logger.info('Database url: %s' % self.db_url)
@@ -85,5 +87,5 @@ class Environment(object):
         """Initialize sqlalchemy."""
         logger.info('Initializing database')
         self.Base = declarative_base()
-        self.engine = create_engine(self.db_url, echo=self.is_debug_mode)
+        self.engine = create_engine(self.db_url, echo=self.is_db_echo)
         self.create_session = sessionmaker(bind=self.engine)

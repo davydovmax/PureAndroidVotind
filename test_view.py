@@ -33,11 +33,12 @@ def fill_test_data(db, current_user=None):
     # TODO: delete test data
     logger.debug('Cleaning db')
     if current_user:
-        db.query(User).filter(id != current_user.id).delete()
+        db.query(User).filter(User.id != current_user.id).delete()
     else:
         db.query(User).delete()
     db.query(Vote).delete()
     db.query(VoteOption).delete()
+    db.commit()
 
     # create users
     logger.debug('Creating users')
@@ -85,7 +86,7 @@ def fill_test_data(db, current_user=None):
         # create vote for a user
         logger.debug('Creating user vote')
         vote_2 = controller.create_vote(db=db,
-            author=current_user.id,
+            author=current_user,
             title='Color You Like',
             text='Choose any color that suits you best at the moment. FYI, my favorite color is red.',
             is_private=False,
