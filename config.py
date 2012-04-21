@@ -1,5 +1,4 @@
 import os
-import sys
 import logging
 
 from sqlalchemy import create_engine
@@ -39,7 +38,8 @@ class Environment(object):
     is_db_echo = True
     is_production = False
     port = 5000
-    db_url = 'sqlite:///votes.db'
+    #db_url = 'sqlite:///votes.db'
+    db_url = 'postgresql://voteapp:voteapp@localhost/votedb'
     history = HistoryHandler()
     Base = None
     engine = None

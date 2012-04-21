@@ -1,12 +1,12 @@
 import logging
 from datetime import datetime
-from bottle import route, get, put, delete, response, request, abort, HTTPError
+from bottle import route, get, put, delete, response, abort
 from sqlalchemy.exc import SQLAlchemyError
+from app import controller
 
 import config
-from model import User, Vote, VoteOption
-import controller
-from json_helper import json_encode_query, json_encode, get_date
+from app.model import User, Vote, VoteOption
+from app.json_helper import json_encode_query
 
 
 logger = logging.getLogger('srv.'+__name__)
@@ -33,6 +33,7 @@ def fill_test_data(db, current_user=None):
     logger.info('Creating test data')
     # TODO: delete test data
     logger.debug('Cleaning db')
+    # raise Exception('spam', 'eggs')
     session = config.env.create_session()
     try:
         if current_user:
@@ -44,7 +45,7 @@ def fill_test_data(db, current_user=None):
         session.commit()
     except SQLAlchemyError, e:
         session.rollback()
-        raise HTTPError(500, "Database Error", e)
+        raise
     finally:
         session.close()
 

@@ -3,9 +3,8 @@ from bottle import route, get, put, delete, response, request, abort
 #from sqlalchemy.exc import SQLAlchemyError
 
 #import config
-from model import User, Vote, VoteOption
-import controller
-from json_helper import json_encode_query, json_encode, get_date
+from app import controller
+from app.json_helper import json_encode_query, json_encode, get_date
 
 
 logger = logging.getLogger('srv.'+__name__)

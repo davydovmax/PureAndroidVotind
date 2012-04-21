@@ -43,7 +43,7 @@ class User(config.env.Base):
 class Vote(config.env.Base):
     __tablename__ = 'votes'
     id = Column(Integer, Sequence('vote_id_seq'), primary_key=True)
-    author_id = Column(Integer, ForeignKey('users.id'))
+    author_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'))
     title = Column(String(120), nullable=False)
     text = Column(String(330), nullable=True)
     is_private = Column(Boolean(), default=False, nullable=False)
@@ -90,7 +90,7 @@ class VoteOption(config.env.Base):
     __tablename__ = 'options'
     id = Column(Integer, Sequence('vote_option_id_seq'), primary_key=True, nullable=False)
     text = Column(String(120), nullable=False)
-    vote_id = Column(Integer, ForeignKey('votes.id'))
+    vote_id = Column(Integer, ForeignKey('votes.id', ondelete='CASCADE'))
 
     def __init__(self, vote_id, text):
         self.vote_id = vote_id
@@ -108,8 +108,8 @@ class VoteOption(config.env.Base):
 class VoteInvitation(config.env.Base):
     __tablename__ = 'invitations'
     id = Column(Integer, Sequence('vote_guest_id_seq'), primary_key=True)
-    vote_id = Column(Integer, ForeignKey('votes.id'))
-    user_id = Column(Integer, ForeignKey('users.id'))
+    vote_id = Column(Integer, ForeignKey('votes.id', ondelete='CASCADE'))
+    user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'))
     is_considered = Column(Boolean(), default=False, nullable=False)
     is_accepted = Column(Boolean(), default=False, nullable=False)
 
@@ -134,9 +134,9 @@ class VoteInvitation(config.env.Base):
 class VoteChoice(config.env.Base):
     __tablename__ = 'choices'
     id = Column(Integer, Sequence('vote_choice_id_seq'), primary_key=True)
-    vote_id = Column(Integer, ForeignKey('votes.id'))
-    user_id = Column(Integer, ForeignKey('users.id'))
-    option_id = Column(Integer, ForeignKey('options.id'))
+    vote_id = Column(Integer, ForeignKey('votes.id', ondelete='CASCADE'))
+    user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'))
+    option_id = Column(Integer, ForeignKey('options.id', ondelete='CASCADE'))
     date_submitted = Column(DateTime(), default=now)
 
     def __init__(self, vote_id, user_id, option_id, date_submitted):

@@ -1,6 +1,6 @@
 import logging
 
-from model import *
+from app.model import *
 
 
 logger = logging.getLogger('srv.'+__name__)
