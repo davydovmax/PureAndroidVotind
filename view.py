@@ -14,7 +14,8 @@ logger = logging.getLogger('srv.'+__name__)
 @get('/<phone_id>/is_registered')
 def register_user(phone_id, db):
     logging.info('Serving is_registered()')
-    return json_encode(controller.get_user(db, phone_id) is not None)
+    is_registered = controller.get_user(db, phone_id) is not None
+    return json_encode({"is_registered": is_registered})
 
 
 @put('/<phone_id>/register')
