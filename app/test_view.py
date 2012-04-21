@@ -1,6 +1,6 @@
 import logging
 from datetime import datetime
-from bottle import route, get, put, delete, response, abort
+from bottle import route, get, put, delete, response, abort, request, template
 from sqlalchemy.exc import SQLAlchemyError
 from app import controller
 
@@ -25,9 +25,12 @@ def logs(db):
     logger.info('Serving logs()')
     formatter = logging.Formatter(fmt='%(asctime)s %(levelname)s %(name)s %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
     logs = [formatter.format(record) for record in config.env.history.records]
+
+    if 'json' not in request.query:
+        return template('logs.tpl', rows=logs)
+
     response.content_type = 'application/json'
     return json_encode_query(logs)
-
 
 def fill_test_data(db, current_user=None):
     logger.info('Creating test data')
