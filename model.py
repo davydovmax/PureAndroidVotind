@@ -21,7 +21,7 @@ class User(config.env.Base):
     email = Column(String(42), nullable=False)
     date_registered = Column(DateTime(), default=now)
     votes = relationship('Vote', cascade='all,delete', backref=backref('author', order_by=id))
-    invitations = relationship('VoteInvitation', backref=backref('user', order_by=id))
+    invitations = relationship('VoteInvitation', cascade='all,delete', backref=backref('user', order_by=id))
     choices = relationship('VoteChoice', cascade='all,delete', backref=backref('user', order_by=id))
 
     def __init__(self, phone_id, fullname, email):

@@ -36,7 +36,7 @@ class HistoryHandler(logging.Handler):
 
 class Environment(object):
     is_debug_mode = True
-    is_db_echo = False
+    is_db_echo = True
     is_production = False
     port = 5000
     db_url = 'sqlite:///votes.db'

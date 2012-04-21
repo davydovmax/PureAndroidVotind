@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime
-from bottle import route, get, put, delete, response, request, abort
+from bottle import route, get, put, delete, response, request, abort, HTTPError
+from sqlalchemy.exc import SQLAlchemyError
 
 import config
 from model import User, Vote, VoteOption
@@ -32,13 +33,20 @@ def fill_test_data(db, current_user=None):
     logger.info('Creating test data')
     # TODO: delete test data
     logger.debug('Cleaning db')
-    if current_user:
-        db.query(User).filter(User.id != current_user.id).delete()
-    else:
-        db.query(User).delete()
-    db.query(Vote).delete()
-    db.query(VoteOption).delete()
-    db.commit()
+    session = config.env.create_session()
+    try:
+        if current_user:
+            session.query(User).filter(User.id != current_user.id).delete()
+        else:
+            session.query(User).delete()
+        session.query(Vote).delete()
+        session.query(VoteOption).delete()
+        session.commit()
+    except SQLAlchemyError, e:
+        session.rollback()
+        raise HTTPError(500, "Database Error", e)
+    finally:
+        session.close()
 
     # create users
     logger.debug('Creating users')
