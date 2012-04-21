@@ -11,6 +11,12 @@ from json_helper import json_encode_query, json_encode, get_date
 logger = logging.getLogger('srv.'+__name__)
 
 
+@get('/<phone_id>/is_registered')
+def register_user(phone_id, db):
+    logging.info('Serving is_registered()')
+    return json_encode(controller.get_user(db, phone_id) is not None)
+
+
 @put('/<phone_id>/register')
 def register_user(phone_id, db):
     """Registers user. If user already created, request will be ignored"""
