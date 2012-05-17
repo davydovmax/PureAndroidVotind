@@ -39,8 +39,10 @@ class User(config.env.Base):
                 'email': self.email,
                 'date_registered': self.date_registered}
 
+
 class VoteStatus:
     new, public, started, ended = range(4)
+
 
 class Vote(config.env.Base):
     __tablename__ = 'votes'

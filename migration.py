@@ -3,10 +3,12 @@ from sqlalchemy import MetaData
 
 import config
 
-
 if __name__ == '__main__':
     env = config.env = config.Environment()
     meta = MetaData(env.engine)
     meta.reflect()
-    meta.drop_all()
+    meta.drop_all(checkfirst=False)
+    meta.clear()
+    from app import model
+    meta.reflect()
     meta.create_all()

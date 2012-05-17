@@ -86,7 +86,8 @@ def create_vote(phone_id, db):
         is_private=is_private,
         is_multiple_choice=is_multiple_choice,
         publication_date=publication_date,
-        start_date=start_date)
+        start_date=start_date,
+        end_date=end_date)
     response.content_type = 'application/json'
     return json_encode(vote)
 

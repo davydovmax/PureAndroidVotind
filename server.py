@@ -10,7 +10,7 @@ if __name__ == '__main__':
     bottle.install(SQLAlchemyPlugin(env.engine, env.Base.metadata, create=True))
 
     # required to create routes
-    from app import  view, test_view
+    from app import view, test_view
     bottle.debug(env.is_debug_mode)
 
     # run server
