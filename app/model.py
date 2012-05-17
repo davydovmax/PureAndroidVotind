@@ -1,6 +1,6 @@
 import logging
 import datetime
-from sqlalchemy import Column, Integer, Sequence, Boolean, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, Sequence, Boolean, Unicode, DateTime, ForeignKey
 from sqlalchemy.orm import relationship, backref
 
 import config
