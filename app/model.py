@@ -39,10 +39,13 @@ class User(config.env.Base):
                 'email': self.email,
                 'date_registered': self.date_registered}
 
+class VoteStatus:
+    new, public, started, ended = range(4)
 
 class Vote(config.env.Base):
     __tablename__ = 'votes'
     id = Column(Integer, Sequence('vote_id_seq'), primary_key=True)
+    status = Column(Integer(), default=VoteStatus.new, nullable=False)
     author_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'))
     title = Column(String(120), nullable=False)
     text = Column(String(330), nullable=True)
@@ -52,13 +55,13 @@ class Vote(config.env.Base):
     publication_date = Column(DateTime(), nullable=False)
     start_date = Column(DateTime(), nullable=False)
     end_date = Column(DateTime(), nullable=False)
-    results_date = Column(DateTime(), nullable=False)
     options = relationship('VoteOption', cascade='all,delete', backref=backref('vote', order_by=id))
     invitations = relationship('VoteInvitation', cascade='all,delete', backref=backref('vote', order_by=id))
     choices = relationship('VoteChoice', cascade='all,delete', backref=backref('vote', order_by=id))
 
     def __init__(self, author_id, title, text, is_private, is_multiple_choice,
-                 publication_date, start_date, end_date, results_date):
+                 publication_date, start_date, end_date):
+        self.status = VoteStatus.new
         self.author_id = author_id
         self.title = title
         self.text = text
@@ -67,13 +70,13 @@ class Vote(config.env.Base):
         self.publication_date = publication_date
         self.start_date = start_date
         self.end_date = end_date
-        self.results_date = results_date
 
     def __repr__(self):
-        return "<Vote('%s','%s', '%s')>" % (self.title, self.text, self.author_id)
+        return "<Vote('%s', '%s','%s', '%s')>" % (self.status, self.title, self.text, self.author_id)
 
     def json_dict(self):
         return {'id': self.id,
+                'status': self.status,
                 'author_id': self.author_id,
                 'title':  self.title,
                 'text': self.text,
@@ -82,7 +85,6 @@ class Vote(config.env.Base):
                 'publication_date': self.publication_date,
                 'start_date': self.start_date,
                 'end_date': self.end_date,
-                'results_date': self.results_date,
                 'is_multiple_choice': self.is_multiple_choice}
 
 

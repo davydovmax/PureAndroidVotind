@@ -68,9 +68,7 @@ def fill_test_data(db, current_user=None):
         is_private=False,
         is_multiple_choice=False,
         publication_date=datetime.now(),
-        start_date=datetime.now(),
-        end_date=datetime.now(),
-        results_date=datetime.now())
+        start_date=datetime.now())
     db.commit()
 
     controller.create_vote_options(db=db,
@@ -104,9 +102,7 @@ def fill_test_data(db, current_user=None):
             is_private=False,
             is_multiple_choice=False,
             publication_date=datetime.now(),
-            start_date=datetime.now(),
-            end_date=datetime.now(),
-            results_date=datetime.now())
+            start_date=datetime.now())
         db.commit()
 
         # create vote options

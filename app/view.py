@@ -74,7 +74,6 @@ def create_vote(phone_id, db):
     publication_date = get_date(request.query.publication_date)
     start_date = get_date(request.query.start_date)
     end_date = get_date(request.query.end_date)
-    results_date = get_date(request.query.results_date)
 
 #    if not fullname or not email:
 #        abort(400, 'User name or email are not specified in request')
@@ -87,9 +86,7 @@ def create_vote(phone_id, db):
         is_private=is_private,
         is_multiple_choice=is_multiple_choice,
         publication_date=publication_date,
-        start_date=start_date,
-        end_date=end_date,
-        results_date=results_date)
+        start_date=start_date)
     response.content_type = 'application/json'
     return json_encode(vote)
 
