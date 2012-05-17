@@ -29,7 +29,7 @@ class User(config.env.Base):
         self.fullname = fullname
         self.email = email
 
-    def __repr__(self):
+    def __str__(self):
         return "<User('%s','%s', '%s')>" % (self.phone_id, self.fullname, self.email)
 
     def json_dict(self):
@@ -73,7 +73,7 @@ class Vote(config.env.Base):
         self.start_date = start_date
         self.end_date = end_date
 
-    def __repr__(self):
+    def __str__(self):
         return "<Vote('%s', '%s','%s', '%s')>" % (self.status, self.title, self.text, self.author_id)
 
     def json_dict(self):
@@ -100,7 +100,7 @@ class VoteOption(config.env.Base):
         self.vote_id = vote_id
         self.text = text
 
-    def __repr__(self):
+    def __str__(self):
         return "<VoteOption('%s','%s')>" % (self.vote_id, self.text)
 
     def json_dict(self):
@@ -123,7 +123,7 @@ class VoteInvitation(config.env.Base):
         self.is_considered = is_considered
         self.is_accepted = is_accepted
 
-    def __repr__(self):
+    def __str__(self):
         return "<VoteInvitation('%s','%s','%s','%s')>" % (self.vote_id, self.user_id,
                                                           self.is_considered, self.is_accepted)
 
@@ -149,7 +149,7 @@ class VoteChoice(config.env.Base):
         self.option_id = option_id
         self.date_submitted = date_submitted
 
-    def __repr__(self):
+    def __str__(self):
         return "<VoteInvitation('{0:>s}','{1:>s}','{2:>s}','{3:>s}')>".\
             format(self.vote_id, self.user_id, self.option_id, self.date_submitted)
 
