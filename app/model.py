@@ -16,9 +16,9 @@ def now():
 class User(config.env.Base):
     __tablename__ = 'users'
     id = Column(Integer, Sequence('user_id_seq'), primary_key=True)
-    phone_id = Column(String(16), nullable=False, unique=True)
-    fullname = Column(String(60), nullable=False)
-    email = Column(String(42), nullable=False)
+    phone_id = Column(Unicode(16), nullable=False, unique=True)
+    fullname = Column(Unicode(60), nullable=False)
+    email = Column(Unicode(42), nullable=False)
     date_registered = Column(DateTime(), default=now)
     votes = relationship('Vote', cascade='all,delete', backref=backref('author', order_by=id))
     invitations = relationship('VoteInvitation', cascade='all,delete', backref=backref('user', order_by=id))
@@ -49,8 +49,8 @@ class Vote(config.env.Base):
     id = Column(Integer, Sequence('vote_id_seq'), primary_key=True)
     status = Column(Integer(), default=VoteStatus.new, nullable=False)
     author_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'))
-    title = Column(String(120), nullable=False)
-    text = Column(String(330), nullable=True)
+    title = Column(Unicode(120), nullable=False)
+    text = Column(Unicode(330), nullable=True)
     is_private = Column(Boolean(), default=False, nullable=False)
     is_multiple_choice = Column(Boolean(), default=False, nullable=False)
     date_created = Column(DateTime(), default=now, nullable=False)
@@ -93,7 +93,7 @@ class Vote(config.env.Base):
 class VoteOption(config.env.Base):
     __tablename__ = 'options'
     id = Column(Integer, Sequence('vote_option_id_seq'), primary_key=True, nullable=False)
-    text = Column(String(120), nullable=False)
+    text = Column(Unicode(120), nullable=False)
     vote_id = Column(Integer, ForeignKey('votes.id', ondelete='CASCADE'))
 
     def __init__(self, vote_id, text):
