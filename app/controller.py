@@ -37,3 +37,10 @@ def create_vote_options(db, vote, options):
         result.append(option)
 
     return result
+
+
+def get_top_votes(db, exclude_user=None):
+    if exclude_user:
+        return db.query(Vote).filter(Vote.author_id != exclude_user.id)
+
+    return db.query(Vote)

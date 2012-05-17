@@ -57,7 +57,12 @@ def my_votes(phone_id, db):
 @get('/<phone_id>/top')
 def top_votes(phone_id, db):
     """Returns list of top opened votes for a user."""
-    return None
+    user = controller.get_user(db, phone_id)
+    if not user:
+        abort(400, 'Invalid or unregistered phone id')
+
+    response.content_type = 'application/json'
+    return json_encode_query(controller.get_top_votes(db, user))
 
 
 @put('/<phone_id>/my')
