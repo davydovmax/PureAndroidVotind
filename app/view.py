@@ -10,6 +10,13 @@ from app.json_helper import json_encode_query, json_encode, get_date
 logger = logging.getLogger('srv.'+__name__)
 
 
+@route('/users')
+def user_listing(db):
+    logger.info('Listing users...')
+    response.content_type = 'application/json'
+    return json_encode_query(controller.get_users(db))
+
+
 @get('/<phone_id>/is_registered')
 def register_user(phone_id, db):
     logging.info('Serving is_registered()')

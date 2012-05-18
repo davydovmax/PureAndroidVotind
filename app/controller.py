@@ -10,6 +10,10 @@ def get_user(db, phone_id):
     return db.query(User).filter_by(phone_id=phone_id).first()
 
 
+def get_users(db):
+    return db.query(User)
+
+
 def create_user(db, phone_id, fullname, email):
     user = User(phone_id=phone_id, fullname=fullname, email=email)
     db.add(user)

@@ -12,14 +12,6 @@ from app.json_helper import json_encode_query
 logger = logging.getLogger('srv.'+__name__)
 
 
-@route('/')
-def user_listing(db):
-    logger.info('Listing users...')
-    users = db.query(User)
-    response.content_type = 'application/json'
-    return json_encode_query(users)
-
-
 @get('/logs')
 def logs(db):
     logger.info('Serving logs()')
@@ -31,6 +23,7 @@ def logs(db):
 
     response.content_type = 'application/json'
     return json_encode_query(logs)
+
 
 def fill_test_data(db, current_user=None):
     logger.info('Creating test data')
