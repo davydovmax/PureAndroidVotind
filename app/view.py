@@ -83,7 +83,6 @@ def create_vote(phone_id, db):
     text = request.query.text
     is_private = request.query.is_private or False
     is_multiple_choice = request.query.is_multiple_choice or False
-    publication_date = get_date(request.query.publication_date)
     start_date = get_date(request.query.start_date)
     end_date = get_date(request.query.end_date)
 
@@ -97,7 +96,6 @@ def create_vote(phone_id, db):
         text=text,
         is_private=is_private,
         is_multiple_choice=is_multiple_choice,
-        publication_date=publication_date,
         start_date=start_date,
         end_date=end_date)
     response.content_type = 'application/json'

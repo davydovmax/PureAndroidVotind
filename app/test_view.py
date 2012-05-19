@@ -60,7 +60,6 @@ def fill_test_data(db, current_user=None):
         text='Choose new USA president',
         is_private=False,
         is_multiple_choice=False,
-        publication_date=datetime.now(),
         start_date=datetime.now(),
         end_date=datetime.now())
     db.commit()
@@ -95,7 +94,6 @@ def fill_test_data(db, current_user=None):
             text='Choose any color that suits you best at the moment. FYI, my favorite color is red.',
             is_private=False,
             is_multiple_choice=False,
-            publication_date=datetime.now(),
             start_date=datetime.now(),
             end_date=datetime.now())
         db.commit()

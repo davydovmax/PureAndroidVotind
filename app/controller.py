@@ -21,13 +21,12 @@ def create_user(db, phone_id, fullname, email):
     return user
 
 
-def create_vote(db, author, title, text, is_private, is_multiple_choice, publication_date, start_date, end_date):
+def create_vote(db, author, title, text, is_private, is_multiple_choice, start_date, end_date):
     vote = Vote(author_id=author.id,
         title=title,
         text=text,
         is_private=is_private,
         is_multiple_choice=is_multiple_choice,
-        publication_date=publication_date,
         start_date=start_date,
         end_date=end_date)
     db.add(vote)

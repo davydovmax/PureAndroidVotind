@@ -54,22 +54,19 @@ class Vote(config.env.Base):
     is_private = Column(Boolean(), default=False, nullable=False)
     is_multiple_choice = Column(Boolean(), default=False, nullable=False)
     date_created = Column(DateTime(), default=now, nullable=False)
-    publication_date = Column(DateTime(), nullable=False)
     start_date = Column(DateTime(), nullable=False)
     end_date = Column(DateTime(), nullable=False)
     options = relationship('VoteOption', cascade='all,delete', backref=backref('vote', order_by=id))
     invitations = relationship('VoteInvitation', cascade='all,delete', backref=backref('vote', order_by=id))
     choices = relationship('VoteChoice', cascade='all,delete', backref=backref('vote', order_by=id))
 
-    def __init__(self, author_id, title, text, is_private, is_multiple_choice,
-                 publication_date, start_date, end_date):
+    def __init__(self, author_id, title, text, is_private, is_multiple_choice, start_date, end_date):
         self.status = VoteStatus.new
         self.author_id = author_id
         self.title = title
         self.text = text
         self.is_private = is_private
         self.is_multiple_choice = is_multiple_choice
-        self.publication_date = publication_date
         self.start_date = start_date
         self.end_date = end_date
 
@@ -84,7 +81,6 @@ class Vote(config.env.Base):
                 'text': self.text,
                 'is_private': self.is_private,
                 'date_created': self.date_created,
-                'publication_date': self.publication_date,
                 'start_date': self.start_date,
                 'end_date': self.end_date,
                 'is_multiple_choice': self.is_multiple_choice}
