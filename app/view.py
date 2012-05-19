@@ -47,6 +47,7 @@ def pending_votes(phone_id, db):
     """Returns list of pending votes for a user."""
     user = controller.get_user(db, phone_id)
     response.content_type = 'application/json'
+    # TODO: return pending votes
     return json_encode_query(user)
 
 
@@ -98,6 +99,61 @@ def create_vote(phone_id, db):
         is_multiple_choice=is_multiple_choice,
         start_date=start_date,
         end_date=end_date)
+    response.content_type = 'application/json'
+    return json_encode(vote)
+
+
+@put('/<phone_id>/my/<id>/publish')
+def publish_vote(phone_id, id, db):
+    """Publishes vote."""
+    user = controller.get_user(db, phone_id)
+    try:
+        id = int(id)
+    except TypeError:
+        abort(400, 'Invalid vote id')
+
+    if not user:
+        abort(400, 'Invalid or unregistered phone id')
+
+    controller.publish_vote(db, id, user)
+
+
+@put('/<phone_id>/my/<id>')
+def edit_vote(phone_id, id, db):
+    """Edits vote."""
+    user = controller.get_user(db, phone_id)
+    try:
+        id = int(id)
+    except TypeError:
+        abort(400, 'Invalid vote id')
+
+    if not user:
+        abort(400, 'Invalid or unregistered phone id')
+
+    title = request.query.title
+    text = request.query.text
+    is_private = request.query.is_private or False
+    is_multiple_choice = request.query.is_multiple_choice or False
+    start_date = get_date(request.query.start_date)
+    end_date = get_date(request.query.end_date)
+
+    #    if not fullname or not email:
+    #        abort(400, 'User name or email are not specified in request')
+    #
+    #TODO: check params
+    try:
+        id = int(id)
+        vote = controller.edit_vote(db=db,
+            id=id,
+            author=user,
+            title=title,
+            text=text,
+            is_private=is_private,
+            is_multiple_choice=is_multiple_choice,
+            start_date=start_date,
+            end_date=end_date)
+    except TypeError:
+        abort(400, 'Vote not found')
     response.content_type = 'application/json'
     return json_encode(vote)
 

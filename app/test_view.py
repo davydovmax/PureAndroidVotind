@@ -84,6 +84,7 @@ def fill_test_data(db, current_user=None):
                  'William J. Clinton',
                  'Dwight D. Eisenhower'])
     db.commit()
+    controller.publish_vote(db, vote1.id, user1)
 
     if current_user:
         # create vote for a user

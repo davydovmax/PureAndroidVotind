@@ -13,9 +13,6 @@ request = urllib2.Request(server + '/71f53486311cfe9b/my?title=vote1&text=weeeee
 request.add_header('Content-Type', 'text/plain')
 request.get_method = lambda: 'PUT'
 response = opener.open(request)
-print response.read()
-
-
 
 request = urllib2.Request(server + '/71f53486311cfe9b/fill_test_data')
 request.add_header('Content-Type', 'text/plain')

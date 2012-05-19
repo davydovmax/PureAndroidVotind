@@ -8,4 +8,4 @@ if __name__ == '__main__':
     meta = MetaData(env.engine)
     meta.reflect()
     meta.drop_all()
-    meta.create_all()
+
