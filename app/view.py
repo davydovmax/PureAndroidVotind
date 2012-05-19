@@ -119,21 +119,38 @@ def publish_vote(phone_id, id, db):
     response.content_type = 'application/json'
     return json_encode(vote)
 
-@put('/<phone_id>/my/<id>/invite')
+@put('/<phone_id>/my/<id>/invitations')
 def set_invitations(phone_id, id, db):
-    """Publishes vote."""
+    """Invites users."""
     user = controller.get_user(db, phone_id)
     users = request.query.users
     try:
         id = int(id)
         users = [int(user_id) for user_id in users.split(',') if user_id]
     except ValueError:
-        abort(400, 'Invalid vote id')
+        abort(400, 'Invalid vote id or users\' ids')
 
     if not user:
         abort(400, 'Invalid or unregistered phone id')
 
     controller.set_invitations(db, id, user, users)
+
+
+@get('/<phone_id>/my/<id>/invitations')
+def get_invitations(phone_id, id, db):
+    """Returns invitations vote."""
+    user = controller.get_user(db, phone_id)
+    try:
+        id = int(id)
+    except ValueError:
+        abort(400, 'Invalid vote id')
+
+    if not user:
+        abort(400, 'Invalid or unregistered phone id')
+
+    invitations = controller.get_invitations(db, id, user)
+    response.content_type = 'application/json'
+    return json_encode(invitations)
 
 
 @put('/<phone_id>/my/<id>')

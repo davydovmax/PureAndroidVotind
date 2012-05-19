@@ -78,6 +78,14 @@ def set_invitations(db, id, author, user_ids):
         db.add(vote)
 
 
+def get_invitations(db, id, author):
+    vote = db.query(Vote).filter_by(id=id, author_id=author.id).first()
+    if not vote:
+        raise ValueError('Vote with id %s not found' % id)
+
+    return vote.invitations
+
+
 def create_vote_options(db, vote, options):
     result = []
     for text in options:

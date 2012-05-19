@@ -24,12 +24,17 @@ request.add_header('Content-Type', 'text/plain')
 request.get_method = lambda: 'PUT'
 url = opener.open(request)
 
-#request = urllib2.Request(server + '/71f53486311cfe9b/my/4/invite?users=5,7,')
-#request.add_header('Content-Type', 'text/plain')
-#request.get_method = lambda: 'PUT'
-#url = opener.open(request)
+request = urllib2.Request(server + '/71f53486311cfe9b/my/153/invitations?users=175')
+request.add_header('Content-Type', 'text/plain')
+request.get_method = lambda: 'PUT'
+url = opener.open(request)
 
-request = urllib2.Request(server + '/71f53486311cfe9b/my/135/publish')
+request = urllib2.Request(server + '/71f53486311cfe9b/my/153/publish')
+request.add_header('Content-Type', 'text/plain')
+request.get_method = lambda: 'PUT'
+response = opener.open(request)
+
+request = urllib2.Request(server + '/71f53486311cfe9b/my/153/invitations')
 request.add_header('Content-Type', 'text/plain')
 request.get_method = lambda: 'PUT'
 response = opener.open(request)
