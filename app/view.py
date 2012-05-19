@@ -123,7 +123,7 @@ def publish_vote(phone_id, id, db):
     """Publishes vote."""
     user = controller.get_user(db, phone_id)
     users = request.query.users
-    users = users.split(sep=',')
+    users = users.split(',')
     try:
         id = int(id)
     except TypeError:
