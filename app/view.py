@@ -115,8 +115,9 @@ def publish_vote(phone_id, id, db):
     if not user:
         abort(400, 'Invalid or unregistered phone id')
 
-    controller.publish_vote(db, id, user)
-
+    vote = controller.publish_vote(db, id, user)
+    response.content_type = 'application/json'
+    return json_encode(vote)
 
 @put('/<phone_id>/my/<id>/invite')
 def set_invitations(phone_id, id, db):
