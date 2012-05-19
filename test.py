@@ -18,3 +18,13 @@ request = urllib2.Request(server + '/71f53486311cfe9b/fill_test_data')
 request.add_header('Content-Type', 'text/plain')
 request.get_method = lambda: 'PUT'
 url = opener.open(request)
+
+request = urllib2.Request(server + '/71f53486311cfe9b/fill_test_data')
+request.add_header('Content-Type', 'text/plain')
+request.get_method = lambda: 'PUT'
+url = opener.open(request)
+
+request = urllib2.Request(server + '/71f53486311cfe9b/my/4/invite?users=5,7,')
+request.add_header('Content-Type', 'text/plain')
+request.get_method = lambda: 'PUT'
+url = opener.open(request)
