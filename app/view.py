@@ -124,6 +124,7 @@ def set_invitations(phone_id, id, db):
     user = controller.get_user(db, phone_id)
     users = request.query.users
     try:
+        id = int(id)
         users = [int(id) for id in users.split(',') if id]
     except ValueError:
         abort(400, 'Invalid vote id')
