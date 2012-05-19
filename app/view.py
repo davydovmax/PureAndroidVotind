@@ -119,14 +119,13 @@ def publish_vote(phone_id, id, db):
 
 
 @put('/<phone_id>/my/<id>/invite')
-def publish_vote(phone_id, id, db):
+def set_invitations(phone_id, id, db):
     """Publishes vote."""
     user = controller.get_user(db, phone_id)
     users = request.query.users
-    users = [ id for id in users.split(',') if id]
     try:
-        id = int(id)
-    except TypeError:
+        users = [int(id) for id in users.split(',') if id]
+    except ValueError:
         abort(400, 'Invalid vote id')
 
     if not user:
