@@ -48,8 +48,8 @@ def fill_test_data(db, current_user=None):
     # create users
     logger.debug('Creating users')
     user1 = controller.create_user(db, 'test_id_1', 'Barak Obama', 'obama@google.com')
-    controller.create_user(db, 'test_id_2', 'John Smith', 'smith@google.com')
-    controller.create_user(db, 'test_id_3', 'Ivan Petrov', 'petrov@google.com')
+    user2 = controller.create_user(db, 'test_id_2', 'John Smith', 'smith@google.com')
+    user3 = controller.create_user(db, 'test_id_3', 'Ivan Petrov', 'petrov@google.com')
     db.commit()
 
     # create vote and options
@@ -114,6 +114,13 @@ def fill_test_data(db, current_user=None):
                      'Blue',
                      'Violet'])
         db.commit()
+
+        #invite someone
+        controller.set_invitations(db=db,
+            id=vote_2.id,
+            author=current_user,
+            user_ids=[user1.id, user2.id, user3.id]
+        )
 
 
 @put('/<phone_id>/fill_test_data')

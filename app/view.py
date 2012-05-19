@@ -118,6 +118,23 @@ def publish_vote(phone_id, id, db):
     controller.publish_vote(db, id, user)
 
 
+@put('/<phone_id>/my/<id>/invite')
+def publish_vote(phone_id, id, db):
+    """Publishes vote."""
+    user = controller.get_user(db, phone_id)
+    users = request.query.users
+    users = users.split(sep=',')
+    try:
+        id = int(id)
+    except TypeError:
+        abort(400, 'Invalid vote id')
+
+    if not user:
+        abort(400, 'Invalid or unregistered phone id')
+
+    controller.set_invitations(db, id, user, users)
+
+
 @put('/<phone_id>/my/<id>')
 def edit_vote(phone_id, id, db):
     """Edits vote."""

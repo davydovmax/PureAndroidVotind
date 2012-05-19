@@ -62,6 +62,22 @@ def publish_vote(db, id, author):
     db.commit()
     return vote
 
+
+def set_invitations(db, id, author, user_ids):
+    vote = db.query(Vote).filter_by(id=id, author_id=author.id).first()
+    if not vote:
+        raise ValueError('Vote with id %s not found' % id)
+
+    # remove old
+    vote.invitations[:] = []
+    db.commit()
+
+    #add new
+    for user_id in user_ids:
+        vote = VoteInvitation(vote_id=vote.id, user_id=user_id, is_accepted=True, is_considered=True)
+        db.add(vote)
+
+
 def create_vote_options(db, vote, options):
     result = []
     for text in options:
