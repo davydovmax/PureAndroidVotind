@@ -17,6 +17,7 @@ def get_users(db):
 def create_user(db, phone_id, fullname, email):
     user = User(phone_id=phone_id, fullname=fullname, email=email)
     db.add(user)
+    db.commit()
     return user
 
 
@@ -30,6 +31,7 @@ def create_vote(db, author, title, text, is_private, is_multiple_choice, publica
         start_date=start_date,
         end_date=end_date)
     db.add(vote)
+    db.commit()
     return vote
 
 
@@ -39,7 +41,7 @@ def create_vote_options(db, vote, options):
         option = VoteOption(vote_id=vote.id, text=text)
         db.add(option)
         result.append(option)
-
+    db.commit()
     return result
 
 
