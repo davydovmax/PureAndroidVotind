@@ -47,8 +47,7 @@ def pending_votes(phone_id, db):
     """Returns list of pending votes for a user."""
     user = controller.get_user(db, phone_id)
     response.content_type = 'application/json'
-    # TODO: return pending votes
-    return json_encode_query(user)
+    return json_encode_query(controller.get_pending_votes(db, user))
 
 
 @get('/<phone_id>/my')

@@ -126,7 +126,8 @@ def get_options(db, vote_id):
 def get_top_votes(db, exclude_user=None):
     if exclude_user:
         return db.query(Vote).filter(Vote.author_id != exclude_user.id,
-        or_(Vote.status == VoteStatus.public, Vote.status == VoteStatus.started))
+            Vote.is_private == False,
+            or_(Vote.status == VoteStatus.public, Vote.status == VoteStatus.started))
 
     return db.query(Vote)
 
@@ -143,7 +144,7 @@ def perform_vote(db, id, author, option_ids):
         if vote_choice.user_id == author.id:
             to_delete.append(vote_choice)
     for vote_choice in vote.choices:
-        db.delete(vote_choice);
+        db.delete(vote_choice)
     db.commit()
 
     #add new
@@ -176,5 +177,17 @@ def get_my_choices(db, vote_id, user):
             result.append(vote_choice)
 
     return result
+
+
+def get_pending_votes(db, user):
+    # votes = db.query(Vote).filter(Vote.author_id!=user.id, Vote.status != VoteStatus.new)
+    result = {}
+    for invitation in user.invitations:
+        result[invitation.vote.id] = invitation.vote
+
+    for choice in user.choices:
+        result[choice.vote.id] = choice.vote
+
+    return [v for v in result.itervalues()]
 
 
