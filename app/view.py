@@ -136,7 +136,7 @@ def set_invitations(phone_id, id, db):
     controller.set_invitations(db, id, user, users)
 
 
-@get('/<phone_id>/vote/<id>/invitations')
+@get('/<phone_id>/votes/<id>/invitations')
 @get('/<phone_id>/my/<id>/invitations')
 def get_invitations(phone_id, id, db):
     """Returns invitations vote."""
