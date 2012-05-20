@@ -115,10 +115,10 @@ def set_vote_options(db, id, author, options):
         db.commit()
 
 
-def get_options(db, id):
-    vote = db.query(Vote).filter_by(id=id).first()
+def get_options(db, vote_id):
+    vote = db.query(Vote).filter_by(id=vote_id).first()
     if not vote:
-        raise ValueError('Vote with id %s not found' % id)
+        raise ValueError('Vote with id %s not found' % vote_id)
 
     return vote.options
 
@@ -129,3 +129,40 @@ def get_top_votes(db, exclude_user=None):
         or_(Vote.status == VoteStatus.public, Vote.status == VoteStatus.started))
 
     return db.query(Vote)
+
+
+def perform_vote(db, id, author, option_ids):
+    vote = db.query(Vote).filter_by(id=id).first()
+    if not vote:
+        raise ValueError('Vote with id %s not found' % id)
+
+    # remove old
+    logger.info('Removing old choices')
+    to_delete = []
+    for vote_choice in vote.choices:
+        if vote_choice.user_id == author.id:
+            to_delete.append(vote_choice)
+    for vote_choice in vote.choices:
+        db.delete(vote_choice);
+    db.commit()
+
+    #add new
+    for option_id in option_ids:
+        logger.info('Creating vote choice for option %s' % option_id)
+        choice = VoteChoice(vote_id=vote.id,
+            user_id=author.id,
+            option_id=option_id,
+            date_submitted=datetime.datetime.now())
+        db.add(choice)
+    db.commit()
+
+
+def get_choices(db, vote_id):
+    vote = db.query(Vote).filter_by(id=vote_id).first()
+    if not vote:
+        raise ValueError('Vote with id %s not found' % vote_id)
+
+    return vote.choices
+
+
+
