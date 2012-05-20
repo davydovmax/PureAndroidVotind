@@ -136,6 +136,7 @@ def set_invitations(phone_id, id, db):
     controller.set_invitations(db, id, user, users)
 
 
+@get('/<phone_id>/vote/<id>/invitations')
 @get('/<phone_id>/my/<id>/invitations')
 def get_invitations(phone_id, id, db):
     """Returns invitations vote."""
@@ -149,7 +150,41 @@ def get_invitations(phone_id, id, db):
         abort(400, 'Invalid or unregistered phone id')
 
     response.content_type = 'application/json'
-    return json_encode(controller.get_invitations(db, id, user))
+    return json_encode(controller.get_invitations(db, id))
+
+
+@put('/<phone_id>/my/<id>/options')
+def set_options(phone_id, id, db):
+    """Set vote options."""
+    user = controller.get_user(db, phone_id)
+    options = request.query.options
+    options = [op for op in options.split(',') if op]
+    try:
+        id = int(id)
+    except ValueError:
+        abort(400, 'Invalid vote id or users\' ids')
+
+    if not user:
+        abort(400, 'Invalid or unregistered phone id')
+
+    controller.set_options(db, id, user, options)
+
+
+@get('/<phone_id>/votes/<id>/options')
+@get('/<phone_id>/my/<id>/options')
+def get_options(phone_id, id, db):
+    """Returns invitations vote."""
+    user = controller.get_user(db, phone_id)
+    try:
+        id = int(id)
+    except ValueError:
+        abort(400, 'Invalid vote id')
+
+    if not user:
+        abort(400, 'Invalid or unregistered phone id')
+
+    response.content_type = 'application/json'
+    return json_encode(controller.get_options(db, id))
 
 
 @put('/<phone_id>/my/<id>')

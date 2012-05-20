@@ -81,8 +81,8 @@ def set_invitations(db, id, author, user_ids):
     db.commit()
 
 
-def get_invitations(db, id, author):
-    vote = db.query(Vote).filter_by(id=id, author_id=author.id).first()
+def get_invitations(db, id):
+    vote = db.query(Vote).filter_by(id=id).first()
     if not vote:
         raise ValueError('Vote with id %s not found' % id)
 
@@ -97,6 +97,30 @@ def create_vote_options(db, vote, options):
         result.append(option)
     db.commit()
     return result
+
+
+def set_vote_options(db, id, author, options):
+    vote = db.query(Vote).filter_by(id=id, author_id=author.id).first()
+    if not vote:
+        raise ValueError('Vote with id %s not found' % id)
+
+    # remove old
+    logger.info('Removing old invitations')
+    vote.options[:] = []
+    db.commit()
+
+    for text in options:
+        option = VoteOption(vote_id=vote.id, text=text)
+        db.add(option)
+        db.commit()
+
+
+def get_options(db, id):
+    vote = db.query(Vote).filter_by(id=id).first()
+    if not vote:
+        raise ValueError('Vote with id %s not found' % id)
+
+    return vote.options
 
 
 def get_top_votes(db, exclude_user=None):
