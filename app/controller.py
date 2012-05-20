@@ -132,7 +132,7 @@ def get_top_votes(db, exclude_user=None):
     return db.query(Vote)
 
 
-def perform_vote(db, id, author, option_ids):
+def perform_vote(db, id, user, option_ids):
     vote = db.query(Vote).filter_by(id=id).first()
     if not vote:
         raise ValueError('Vote with id %s not found' % id)
@@ -141,9 +141,10 @@ def perform_vote(db, id, author, option_ids):
     logger.info('Removing old choices')
     to_delete = []
     for vote_choice in vote.choices:
-        if vote_choice.user_id == author.id:
+        if vote_choice.user_id == user.id:
             to_delete.append(vote_choice)
-    for vote_choice in vote.choices:
+
+    for vote_choice in to_delete:
         db.delete(vote_choice)
     db.commit()
 
@@ -151,7 +152,7 @@ def perform_vote(db, id, author, option_ids):
     for option_id in option_ids:
         logger.info('Creating vote choice for option %s' % option_id)
         choice = VoteChoice(vote_id=vote.id,
-            user_id=author.id,
+            user_id=user.id,
             option_id=option_id,
             date_submitted=datetime.datetime.now())
         db.add(choice)
@@ -190,4 +191,34 @@ def get_pending_votes(db, user):
 
     return [v for v in result.itervalues()]
 
+
+def get_vote_results(db, vote_id):
+    vote = db.query(Vote).filter_by(id=vote_id).first()
+    if not vote:
+        raise ValueError('Vote with id %s not found' % vote_id)
+
+    titles = {}
+    scores = {} # choice id, sum
+    for choice in vote.choices:
+        option = db.query(VoteOption).filter_by(id=choice.option_id).first()
+        if not scores.has_key(option.id):
+            scores[option.id] = 0
+
+        scores[option.id] += 1
+        titles[option.id] = option.text
+
+    result = []
+    for id, score in scores.iteritems():
+        result.append((titles[id], score))
+
+    max = 0
+    max_title = ''
+
+    for title, score in result:
+        if score > max:
+            max = score
+            max_title = title
+
+    result = [VoteResultScore(*pair) for pair in result]
+    return VoteResultScoreHolder(vote_id, max_title, max, result)
 

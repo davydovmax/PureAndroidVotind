@@ -67,7 +67,7 @@ def fill_test_data(db, current_user=None):
     controller.create_vote_options(db=db,
         vote=vote1,
         options=['Theodore Roosevelt',
-                 'John F. Ke    nnedy',
+                 'John F. Kennedy',
                  'William Howard Taft',
                  'Lyndon B. Johnson',
                  'Woodrow Wilson',

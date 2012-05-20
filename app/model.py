@@ -155,3 +155,28 @@ class VoteChoice(config.env.Base):
                 'user_id': self.user_id,
                 'option_id': self.option_id,
                 'date_submitted': self.date_submitted}
+
+
+
+class VoteResultScore:
+    def __init__(self, text, score):
+        self.text = text
+        self.score = score
+
+    def json_dict(self):
+        return {'text': self.text,
+                'score': self.score }
+
+
+class VoteResultScoreHolder:
+    def __init__(self, vote_id, winner, max_score, scores):
+        self.vote_id = vote_id
+        self.winner = winner
+        self.max_score = max_score
+        self.scores = scores
+
+    def json_dict(self):
+        return {'vote_id': self.vote_id,
+                'winner': self.winner,
+                'max_score': self.max_score,
+                'scores': self.scores }

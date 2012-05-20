@@ -238,6 +238,23 @@ def perform_vote(phone_id, id, db):
     controller.perform_vote(db, id, user, options_ids)
 
 
+@get('/<phone_id>/votes/<id>/result')
+@get('/<phone_id>/my/<id>/result')
+def get_choices(phone_id, id, db):
+    """Returns results for vote."""
+    user = controller.get_user(db, phone_id)
+    try:
+        id = int(id)
+    except ValueError:
+        abort(400, 'Invalid vote id')
+
+    if not user:
+        abort(400, 'Invalid or unregistered phone id')
+
+    response.content_type = 'application/json'
+    return json_encode(controller.get_vote_results(db, id))
+
+
 @put('/<phone_id>/my/<id>')
 def edit_vote(phone_id, id, db):
     """Edits vote."""
