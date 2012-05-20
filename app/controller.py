@@ -69,13 +69,16 @@ def set_invitations(db, id, author, user_ids):
         raise ValueError('Vote with id %s not found' % id)
 
     # remove old
+    logger.info('Removing old invitations')
     vote.invitations[:] = []
     db.commit()
 
     #add new
     for user_id in user_ids:
-        vote = VoteInvitation(vote_id=vote.id, user_id=user_id, is_accepted=True, is_considered=True)
-        db.add(vote)
+        logger.info('Creating invitation for user %s' % user_id)
+        invitation = VoteInvitation(vote_id=vote.id, user_id=user_id, is_accepted=True, is_considered=True)
+        db.add(invitation)
+    db.commit()
 
 
 def get_invitations(db, id, author):

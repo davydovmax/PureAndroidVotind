@@ -148,9 +148,8 @@ def get_invitations(phone_id, id, db):
     if not user:
         abort(400, 'Invalid or unregistered phone id')
 
-    invitations = controller.get_invitations(db, id, user)
     response.content_type = 'application/json'
-    return json_encode(invitations)
+    return json_encode(controller.get_invitations(db, id, user))
 
 
 @put('/<phone_id>/my/<id>')
