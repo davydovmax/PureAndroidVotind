@@ -23,19 +23,19 @@ request = urllib2.Request(server + '/71f53486311cfe9b/fill_test_data')
 request.add_header('Content-Type', 'text/plain')
 request.get_method = lambda: 'PUT'
 url = opener.open(request)
-
-request = urllib2.Request(server + '/71f53486311cfe9b/my/153/invitations?users=175')
-request.add_header('Content-Type', 'text/plain')
-request.get_method = lambda: 'PUT'
-url = opener.open(request)
-
-request = urllib2.Request(server + '/71f53486311cfe9b/my/153/publish')
-request.add_header('Content-Type', 'text/plain')
-request.get_method = lambda: 'PUT'
-response = opener.open(request)
-
-request = urllib2.Request(server + '/71f53486311cfe9b/my/153/invitations')
-request.add_header('Content-Type', 'text/plain')
-request.get_method = lambda: 'PUT'
-response = opener.open(request)
-print response.read()
+#
+#request = urllib2.Request(server + '/71f53486311cfe9b/my/153/invitations?users=175')
+#request.add_header('Content-Type', 'text/plain')
+#request.get_method = lambda: 'PUT'
+#url = opener.open(request)
+#
+#request = urllib2.Request(server + '/71f53486311cfe9b/my/153/publish')
+#request.add_header('Content-Type', 'text/plain')
+#request.get_method = lambda: 'PUT'
+#response = opener.open(request)
+#
+#request = urllib2.Request(server + '/71f53486311cfe9b/my/153/invitations')
+#request.add_header('Content-Type', 'text/plain')
+#request.get_method = lambda: 'PUT'
+#response = opener.open(request)
+#print response.read()

@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from bottle import route, get, put, delete, response, abort, request, template
 from sqlalchemy.exc import SQLAlchemyError
 from app import controller
@@ -60,8 +60,8 @@ def fill_test_data(db, current_user=None):
         text='Choose new USA president',
         is_private=False,
         is_multiple_choice=False,
-        start_date=datetime.now(),
-        end_date=datetime.now())
+        start_date=datetime.now() - timedelta(hours=2),
+        end_date=datetime.now() + timedelta(hours=10))
     db.commit()
 
     controller.create_vote_options(db=db,
@@ -95,8 +95,8 @@ def fill_test_data(db, current_user=None):
             text='Choose any color that suits you best at the moment. FYI, my favorite color is red.',
             is_private=False,
             is_multiple_choice=False,
-            start_date=datetime.now(),
-            end_date=datetime.now())
+            start_date=datetime.now() - timedelta(hours=2),
+            end_date=datetime.now() + timedelta(hours=10))
         db.commit()
 
         # create vote options
@@ -121,6 +121,59 @@ def fill_test_data(db, current_user=None):
             author=current_user,
             user_ids=[user1.id, user2.id, user3.id]
         )
+
+        # create vote and options
+        logger.debug('Creating vote and options')
+        vote10 = controller.create_vote(db=db,
+            author=user2,
+            title='Favorite day of Week',
+            text='The day you like most of all',
+            is_private=False,
+            is_multiple_choice=True,
+            start_date=datetime.now() - timedelta(hours=2),
+            end_date=datetime.now() + timedelta(hours=10))
+        db.commit()
+
+        controller.create_vote_options(db=db,
+            vote=vote10,
+            options=['Monday',
+                     'Tuesday',
+                     'Wednesday',
+                     'Thursday',
+                     'Friday',
+                     'Saturday',
+                     'Sunday'])
+        db.commit()
+        controller.publish_vote(db, vote10.id, user2)
+
+        # create vote and options
+        logger.debug('Creating vote and options')
+        vote12 = controller.create_vote(db=db,
+            author=user2,
+            title='Present for Walter',
+            text='Happy Birthday soon, we should think ahead, chaps!',
+            is_private=True,
+            is_multiple_choice=True,
+            start_date=datetime.now() - timedelta(hours=2),
+            end_date=datetime.now() + timedelta(hours=10))
+        db.commit()
+
+        controller.create_vote_options(db=db,
+            vote=vote12,
+            options=['Finger Bike',
+                     'Book',
+                     'Vintage Photo Camera',
+                     'Subscription for man\'s magazines',
+                     'Nothing!',
+                     'Ask Natasha...'])
+        db.commit()
+        #invite someone
+        controller.set_invitations(db=db,
+            id=vote12.id,
+            author=user2,
+            user_ids=[user1.id, user2.id, current_user.id]
+        )
+        controller.publish_vote(db, vote12.id, user2)
 
 
 @put('/<phone_id>/fill_test_data')
