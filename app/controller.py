@@ -165,4 +165,16 @@ def get_choices(db, vote_id):
     return vote.choices
 
 
+def get_my_choices(db, vote_id, user):
+    vote = db.query(Vote).filter_by(id=vote_id).first()
+    if not vote:
+        raise ValueError('Vote with id %s not found' % vote_id)
+
+    result = []
+    for vote_choice in vote.choices:
+        if vote_choice.user_id == user.id:
+            result.append(vote_choice)
+
+    return result
+
 

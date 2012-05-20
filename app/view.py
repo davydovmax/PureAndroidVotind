@@ -189,7 +189,7 @@ def get_options(phone_id, id, db):
 
 @get('/<phone_id>/votes/<id>/choices')
 @get('/<phone_id>/my/<id>/choices')
-def get_options(phone_id, id, db):
+def get_choices(phone_id, id, db):
     """Returns choices for vote."""
     user = controller.get_user(db, phone_id)
     try:
@@ -202,6 +202,23 @@ def get_options(phone_id, id, db):
 
     response.content_type = 'application/json'
     return json_encode(controller.get_choices(db, id))
+
+
+@get('/<phone_id>/votes/<id>/my_choices')
+@get('/<phone_id>/my/<id>/my_choices')
+def get_choices(phone_id, id, db):
+    """Returns choices for vote."""
+    user = controller.get_user(db, phone_id)
+    try:
+        id = int(id)
+    except ValueError:
+        abort(400, 'Invalid vote id')
+
+    if not user:
+        abort(400, 'Invalid or unregistered phone id')
+
+    response.content_type = 'application/json'
+    return json_encode(controller.get_my_choices(db, id, user))
 
 
 @get('/<phone_id>/votes/<id>/vote')
